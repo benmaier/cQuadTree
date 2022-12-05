@@ -1,19 +1,11 @@
-*Note: This is a dummy README for the package you want to build. For a README for the package builder, check out
-[PACKAGE_CREATION_README.md](https://github.com/benmaier/cQuadTree/blob/main/PACKAGE_CREATION_README.md)*
+# cQuadTree
 
-![logo](https://github.com/benmaier/cQuadTree/raw/main/img/Fig1.png)
-
-[![CircleCI](https://circleci.com/gh/benmaier/cQuadTree.svg?style=svg)](https://circleci.com/gh/benmaier/cQuadTree)
-
-Description of this package goes here.
+Infinite jest with your favorite space-dividing trees.
 
 * repository: https://github.com/benmaier/cQuadTree/
 * documentation: http://cQuadTree.benmaier.org/
 
 ```python
-from cQuadTree.sqrt import get_sqrt_2
-
-print(get_sqrt_2())
 ```
 
 ## Install
