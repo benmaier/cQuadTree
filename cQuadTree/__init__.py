@@ -13,3 +13,13 @@ from .metadata import (
         __email__,
         __status__,
     )
+
+from _cQuadTree import (
+        Point,
+        Extent,
+        QuadTree,
+    )
+
+from .utils import (
+        histogram,
+    )

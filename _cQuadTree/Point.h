@@ -43,6 +43,7 @@ class Point {
         friend istream& operator>>(istream& is, const Point& vec);
 
         double length() const;
+        double length2() const;
 
         string tostr() const;
         bool is_null() const;
@@ -98,7 +99,11 @@ inline istream& operator>>(istream& is, Point& vec) {
 
 
 inline double Point::length() const {
-	return (double)sqrt( x*x + y*y );
+	return (double)sqrt( length2() );
+}
+
+inline double Point::length2() const {
+	return (double) (x*x + y*y);
 }
 
 inline bool Point::is_null() const {

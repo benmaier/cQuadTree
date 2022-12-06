@@ -548,18 +548,18 @@ class QuadTree
         if (tree->is_leaf())
         {
             Point d = (tree->this_pos) - pos;
-            double norm = d.length();
-            if (norm > 0)
-                force += (tree->total_mass) * d/pow(norm,3);
+            double norm2 = d.length2();
+            if (norm2 > 0)
+                force += (tree->total_mass) * d/pow(norm2,1.5);
         }
         else
         {
             Point _r = tree->center_of_mass;
             Point d = (_r) - pos;
-            double s = sqrt(tree->geom.width() * tree->geom.height()); // geometric mean of box dimensions
-            double norm = d.length();
-            if ((s/norm) < theta)
-                force += (tree->total_mass) * d/pow(norm,3);
+            double s2 = tree->geom.width() * tree->geom.height(); // geometric mean of box dimensions
+            double norm2 = d.length2();
+            if ((s2/norm2) < theta*theta)
+                force += (tree->total_mass) * d/pow(norm2,1.5);
             else
                 for(auto &subtree: tree->subtrees.trees){
                     if (subtree != NULL){
@@ -569,7 +569,7 @@ class QuadTree
         }
     }
 
-    pair < double, double > compute_force(
+    pair < double, double > compute_force_on_pair(
                  const pair < double, double > &pos,
                  double theta = 0.5
              )
@@ -598,30 +598,30 @@ class QuadTree
         if (tree->is_leaf())
         {
             Point d = (tree->this_pos) - pos;
-            double norm = d.length();
-            if ((norm > 0) || (!ignore_zero_distance))
-                distances.push_back(make_pair(norm, 1));
+            double norm2 = d.length2();
+            if ((norm2 > 0) || (!ignore_zero_distance))
+                distances.push_back(make_pair(sqrt(norm2), 1));
         }
         else
         {
             Point _r = tree->center_of_mass;
             Point d = (_r) - pos;
-            double s = sqrt(tree->geom.width() * tree->geom.height()); // geometric mean of box dimensions
-            double norm = d.length();
-            if ((s/norm) < theta)
-                distances.push_back(make_pair(norm, (tree->number_of_contained_points)));
+            double s2 = tree->geom.width() * tree->geom.height(); // geometric mean of box dimensions
+            double norm2 = d.length2();
+            if ((s2/norm2) < theta*theta)
+                distances.push_back(make_pair(sqrt(norm2), (tree->number_of_contained_points)));
             else
                 for(auto &subtree: tree->subtrees.trees){
                     if (subtree != NULL){
                         get_distances_to(pos, distances, theta, 
-                                      def("compute_force",    ignore_zero_distance,
+                                         ignore_zero_distance,
                                          subtree);
                     }
                 }
         }
     }
 
-    vector < pair < double, size_t > > get_distances_to(
+    vector < pair < double, size_t > > get_distances_to_pair(
                  const pair < double, double > &pos,
                  const double &theta = 0.2,
                  const bool &ignore_zero_distance = true,
@@ -633,7 +633,7 @@ class QuadTree
         return distances;
     }
 
-    vector < pair < double, size_t > > get_distances_to(
+    vector < pair < double, size_t > > get_distances_to_pairs(
                  const vector < pair < double, double > > &positions,
                  const double &theta = 0.2,
                  const bool &ignore_zero_distance = true,

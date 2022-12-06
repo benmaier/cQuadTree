@@ -103,6 +103,163 @@ PYBIND11_MODULE(_cQuadTree, m)
         .def("__str__", &QuadTree::str, R"pbdoc(Get a string representation of the full tree)pbdoc")
         .def("get_subtrees", &QuadTree::get_subtrees, R"pbdoc(Get a list of all of this node's children that contain data.)pbdoc",py::return_value_policy::reference)
         .def("get_subtree", &QuadTree::get_subtree, R"pbdoc(Get subtree 0<=i<=3.)pbdoc",py::return_value_policy::reference)
+        .def("compute_force", &QuadTree::compute_force_on_pair,
+                py::arg("point"),
+                py::arg("theta")=0.5,
+            R"pbdoc(
+            Compute the force on a single point using the Barnes-Hut-Algorithm
+            with cutoff parameter :math:`\theta`.
+
+            Parameters
+            ----------
+            point : 2-tuple of float
+                Point in plane on which to compute the total force
+            theta : float, default = 0.5
+                If the distance between the point and the current internal node's
+                center of mass is smaller than :math:`\theta` times the diameter
+                of the internal node's extent (box), the algorithm will treat
+                all children of this node as a giant point mass located at the
+                center of mass of this internal node.
+
+            Returns
+            -------
+            force : 2-tuple of float
+                Evaluated force vector
+        )pbdoc")
+        .def("get_distances_to", &QuadTree::get_distances_to_pair/*,
+                py::arg("point"),
+                py::arg("theta") = 0.2,
+                py::arg("ignore_zero_distance") = true,
+                py::arg("tree") = NULL,
+            R"pbdoc(
+            Compute distances of point masses and mass clusters to a single point 
+            using the Barnes-Hut-Algorithm with cutoff parameter :math:`\theta`.
+
+            Parameters
+            ----------
+            point : 2-tuple of float
+                Points in the plane to which to measure the distances
+            theta : float, default = 0.2
+                If the distance between the point and the current internal node's
+                center of mass is smaller than :math:`\theta` times the diameter
+                of the internal node's extent (box), the algorithm will treat
+                all children of this node as a giant point mass located at the
+                center of mass of this internal node.
+            ignore_zero_distance : bool, default = True
+                If the distance is zero, do or do not include this result in 
+                the ``distance_counts``-list.
+
+            Returns
+            -------
+            distance_counts : list of 2-tuple of double, int
+                An item of this list is a distance-count pair,
+                the first entry of the tuple containing a distance
+                to the query point and the second entry being the
+                number of points that lie at that approximate distance
+                to the query point, such that it will look like this
+
+                .. code:: python
+
+                    [
+                        (0.2, 1),
+                        (0.1, 1),
+                        (1.5, 32),
+                        ...
+                    ]
+        )pbdoc"*/)
+        .def("get_distances_to_points", &QuadTree::get_distances_to_pairs/*,
+                py::arg("points"),
+                py::arg("theta") = 0.2,
+                py::arg("ignore_zero_distance") = true,
+                py::arg("tree") = NULL,
+            R"pbdoc(
+            Compute distances of point masses and mass clusters to a list of points
+            using the Barnes-Hut-Algorithm with cutoff parameter :math:`\theta`.
+
+            Parameters
+            ----------
+            points : 2-tuple of float
+                List of points in the plane to which to measure the distances
+            theta : float, default = 0.2
+                If the distance between the point and the current internal node's
+                center of mass is smaller than :math:`\theta` times the diameter
+                of the internal node's extent (box), the algorithm will treat
+                all children of this node as a giant point mass located at the
+                center of mass of this internal node.
+            ignore_zero_distance : bool, default = True
+                If the distance is zero, do or do not include this result in 
+                the ``distance_counts``-list.
+
+            Returns
+            -------
+            distance_counts : list of 2-tuple of double, int
+                An item of this list is a distance-count pair,
+                the first entry of the tuple containing a distance
+                to the query point and the second entry being the
+                number of points that lie at that approximate distance
+                to the query point, such that it will look like this
+
+                .. code:: python
+
+                    [
+                        (0.2, 1),
+                        (0.1, 1),
+                        (1.5, 32),
+                        ...
+                    ]
+        )pbdoc"*/)
+        .def("get_pairwise_distances", &QuadTree::get_pairwise_distances,
+                py::arg("theta") = 0.2,
+                py::arg("ignore_zero_distance") = true,
+                py::arg("distances") = NULL,
+                py::arg("node") = NULL,
+                py::arg("tree") = NULL,
+            R"pbdoc(
+            Compute distances between pairs of points and point clusters 
+            of a tree using the Barnes-Hut-Algorithm with cutoff parameter
+            :math:`\theta`.
+
+            Iterates over points by querying the tree recursively, which 
+            might take longer than simply externally iterating over a list of points
+            if they're known.
+
+            Parameters
+            ----------
+            theta : float, default = 0.2
+                If the distance between the point and the current internal node's
+                center of mass is smaller than :math:`\theta` times the diameter
+                of the internal node's extent (box), the algorithm will treat
+                all children of this node as a giant point mass located at the
+                center of mass of this internal node.
+            ignore_zero_distance : bool, default = True
+                If the distance is zero, do or do not include this result in 
+                the ``distance_counts``-list.
+
+            Returns
+            -------
+            distance_counts : list of 2-tuple of double, int
+                An item of this list is a distance-count pair,
+                the first entry of the tuple containing a distance
+                to the query point and the second entry being the
+                number of points that lie at that approximate distance
+                to the query point, such that it will look like this
+
+                .. code:: python
+
+                    [
+                        (0.2, 1),
+                        (0.1, 1),
+                        (1.5, 32),
+                        ...
+                    ]
+        )pbdoc")
+
+
+
+        .def_readwrite("geom", &QuadTree::geom, "Extent of box this tree represents.")
+        .def_readwrite("current_data_quadrant", &QuadTree::current_data_quadrant, "Quadrant of the parent geometry the data of this tree resides in.")
+
+
         .def_readwrite("geom", &QuadTree::geom, "Extent of box this tree represents.")
         .def_readwrite("current_data_quadrant", &QuadTree::current_data_quadrant, "Quadrant of the parent geometry the data of this tree resides in.")
         .def_readwrite("this_pos", &QuadTree::this_pos, "Position of the point contained in this leaf.")
