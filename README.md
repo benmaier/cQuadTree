@@ -131,7 +131,7 @@ from cQuadTree.plot import plot_box_tree
 plot_box_tree(*get_points_and_boxes(T))
 ```
 
-![Box representation of tree]([https://github.com/benmaier/cQuadTree/blob/main/img/boxtree.png?raw=true])
+![Box representation of tree](https://github.com/benmaier/cQuadTree/blob/main/img/boxtree.png?raw=true)
 
 ## Changelog
 
