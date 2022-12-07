@@ -2,7 +2,7 @@ cQuadTree
 =========
 
 Infinite jest with your favorite space-dividing trees. Fork from this
-C++-codebase: [github.com/benmaier/BarnesHutTree]
+C++-codebase: github.com/benmaier/BarnesHutTree
 
 -  repository: https://github.com/benmaier/cQuadTree/
 
