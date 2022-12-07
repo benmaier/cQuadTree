@@ -646,10 +646,18 @@ class QuadTree
         return distances;
     }
 
+    vector < pair < double, size_t > > _get_pairwise_distances(
+                 const double &theta = 0.2,
+                 const bool &ignore_zero_distance = true
+            ){
+        return get_pairwise_distances(theta, ignore_zero_distance);
+
+    }
+
     vector < pair < double, size_t > > get_pairwise_distances(
                  const double &theta = 0.2,
                  const bool &ignore_zero_distance = true,
-                 vector < pair < double, size_t > > *distances = NULL,
+                 vector < pair < double, size_t > >* distances = NULL,
                  QuadTree* node = NULL,
                  QuadTree* root = NULL
             )

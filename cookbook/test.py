@@ -18,7 +18,8 @@ print("done")
 #T.get_distances_to((0.5,0.5),.2,True,T)
 #T.get_distances_to((0.5,0.5),.2,True,T)
 print("querying tree")
-dists = np.array(T.get_distances_to_points(lpos, 0.1, True, T))
+#dists = np.array(T.get_distances_to_points(lpos, 0.1, True, T))
+dists = np.array(T.get_distances_to_points(lpos, 0.2))
 print("done")
 #dists = np.array(T.get_distances_to_points(T, lpos))
 dists, counts = dists[:,0], dists[:,1]
@@ -41,6 +42,9 @@ print("computing pairwise distances")
 density, _ = np.histogram(pdist(pos), bins=bin_edges,density=True)
 print("done")
 pl.plot(x, density)
+
+pl.yscale('log')
+pl.xscale('log')
 
 pl.show()
 

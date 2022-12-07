@@ -126,11 +126,11 @@ PYBIND11_MODULE(_cQuadTree, m)
             force : 2-tuple of float
                 Evaluated force vector
         )pbdoc")
-        .def("get_distances_to", &QuadTree::get_distances_to_pair/*,
+        .def("get_distances_to", &QuadTree::get_distances_to_pair,
                 py::arg("point"),
                 py::arg("theta") = 0.2,
                 py::arg("ignore_zero_distance") = true,
-                py::arg("tree") = NULL,
+                py::arg("tree") = (QuadTree*) nullptr,
             R"pbdoc(
             Compute distances of point masses and mass clusters to a single point 
             using the Barnes-Hut-Algorithm with cutoff parameter :math:`\theta`.
@@ -166,12 +166,12 @@ PYBIND11_MODULE(_cQuadTree, m)
                         (1.5, 32),
                         ...
                     ]
-        )pbdoc"*/)
-        .def("get_distances_to_points", &QuadTree::get_distances_to_pairs/*,
+        )pbdoc")
+        .def("get_distances_to_points", &QuadTree::get_distances_to_pairs,
                 py::arg("points"),
                 py::arg("theta") = 0.2,
                 py::arg("ignore_zero_distance") = true,
-                py::arg("tree") = NULL,
+                py::arg("tree") = (QuadTree*) nullptr,
             R"pbdoc(
             Compute distances of point masses and mass clusters to a list of points
             using the Barnes-Hut-Algorithm with cutoff parameter :math:`\theta`.
@@ -207,13 +207,10 @@ PYBIND11_MODULE(_cQuadTree, m)
                         (1.5, 32),
                         ...
                     ]
-        )pbdoc"*/)
-        .def("get_pairwise_distances", &QuadTree::get_pairwise_distances,
+        )pbdoc")
+        .def("get_pairwise_distances", &QuadTree::_get_pairwise_distances,
                 py::arg("theta") = 0.2,
                 py::arg("ignore_zero_distance") = true,
-                py::arg("distances") = NULL,
-                py::arg("node") = NULL,
-                py::arg("tree") = NULL,
             R"pbdoc(
             Compute distances between pairs of points and point clusters 
             of a tree using the Barnes-Hut-Algorithm with cutoff parameter
@@ -253,6 +250,7 @@ PYBIND11_MODULE(_cQuadTree, m)
                         ...
                     ]
         )pbdoc")
+        .def("is_leaf", &QuadTree::is_leaf, "Whether or not this node is a leaf.")
 
 
 

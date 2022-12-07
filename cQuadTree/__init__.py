@@ -22,4 +22,5 @@ from _cQuadTree import (
 
 from .utils import (
         histogram,
+        get_points_and_boxes,
     )
